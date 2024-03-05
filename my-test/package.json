@@ -1,0 +1,30 @@
+{
+  "name": "my-test",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^7.7.0",
+    "cors": "^2.8.5",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/ux-specification": "^1.120.5",
+    "sqlite3": "^5.1.7"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-my-test": "cds watch --open my-test/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-my-question": "cds watch --open my-question/webapp/index.html?sap-ui-xx-viewCache=false"
+  },
+  "sapux": [
+    "app/my-test",
+    "app/my-question",
+    "app/my-test",
+    "app/my-test",
+    "app/my-test"
+  ]
+}

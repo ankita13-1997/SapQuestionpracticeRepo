@@ -1,0 +1,15 @@
+# POST http://localhost:4004/odata/v4/test/assignQuestionsToTest
+# Content-Type: application/json
+
+# {
+#   "questionsCount": 2
+# }
+
+
+//Request 4: Assign Questions to the Test using the bound action
+POST http://localhost:4004/odata/v4/test/Tests('1')/TestService.assignQuestionsToTest
+Content-Type: application/json
+
+{
+  "questionsCount": 2
+}
