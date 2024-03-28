@@ -7,6 +7,7 @@
   "private": true,
   "dependencies": {
     "@sap/cds": "^7.7.0",
+    "@sap/xssec": "^3",
     "cors": "^2.8.5",
     "express": "^4"
   },
@@ -26,5 +27,35 @@
     "app/my-test",
     "app/my-test",
     "app/my-test"
-  ]
+  ],
+  "cds": {
+    "requires": {
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "incident.support@tester.sap.com": {
+            "password": "initial",
+            "roles": [
+              "endUser"
+            ]
+          },
+          "incident.support@admin.sap.com": {
+            "password": "initial",
+            "roles": [
+              "admin"
+            ]
+          },
+          "bob": {
+            "roles": [
+              "endUser"
+            ]
+          }
+        }
+      },
+      "API_BUSINESS_PARTNER": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_BUSINESS_PARTNER"
+      }
+    }
+  }
 }

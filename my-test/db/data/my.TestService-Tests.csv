@@ -1,4 +1,4 @@
-TestID,Title,Description,CreatedAt,CreatedBy,ModifiedAt,ModifiedBy,questions_QuestionID
-1,Math Test,Test on basic math,2022-01-01T10:00:00Z,John,2022-01-01T11:30:00Z,Jane
-2,Science Test,Test on general science,2022-02-01T09:30:00Z,Bob,2022-02-01T12:15:00Z,Alice
-3,computer Test, Test on computer science,2022-02-01T09:30:00Z,godzilla,2022-02-01T12:15:00Z, tiransorous
+TestID,Title,Description,CreatedAt,CreatedBy,ModifiedAt,ModifiedBy,rating,fees,currency_code,associatedQuestion
+1,Math Test,Test on basic math,2022-01-01T10:00:00Z,John,2022-01-01T11:30:00Z,Jane, 1,,,false
+2,Science Test,Test on general science,2022-02-01T09:30:00Z,Bob,2022-02-01T12:15:00Z,Alice,,,,false
+3,computer Test, Test on computer science,2022-02-01T09:30:00Z,godzilla,2022-02-01T12:15:00Z, tiransorous,2,,,false

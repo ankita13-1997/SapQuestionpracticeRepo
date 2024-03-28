@@ -7,9 +7,27 @@
 
 
 //Request 4: Assign Questions to the Test using the bound action
-POST http://localhost:4004/odata/v4/test/Tests('1')/TestService.assignQuestionsToTest
+POST http://localhost:4004/odata/v4/test/Tests('2')/TestService.assignQuestionsToTest
 Content-Type: application/json
 
+ {
+   "questionsCount": 2
+}
+//get call
+##########
+
+GET http://localhost:4004/odata/v4/test/Tests
+Authorization: Basic incident.support@admin.sap.com:initial
+##########
+GET http://localhost:4004/odata/v4/test/Questions
+Content-Type: application/json
+
+###############
+
+ POST http://localhost:4004/odata/v4/test/Tests('1')/TestService.addReview
+ Content-Type: application/json
 {
-  "questionsCount": 2
+  "rating": 4,
+  "title": "Science Test",
+  "text": "This test was excellent!"
 }
