@@ -44,7 +44,9 @@ annotate service.Tests with @(UI.LineItem: [
         ![@UI.Importance]: #High,
     },
 
-    {Value : fees},
+    {Value: fees},
+    {Value: supplier_ID},
+    {Value: supplier.isBlocked},
 ],
 
 );
@@ -140,7 +142,9 @@ annotate service.Tests with @(
                 Target           : '@UI.DataPoint#testRating',
                 ![@UI.Importance]: #High,
             },
-             {Value : fees},
+            {Value: fees},
+            {Value: supplier_ID},
+            {Value: supplier.isBlocked},
 
         ],
     },
@@ -174,15 +178,18 @@ annotate service.Tests with @(
         Action            : 'TestService.assignQuestionsToTest',
         InvocationGrouping: #ChangeSet
     }, ]},
-     
-    
+
+
     UI.FieldGroup #AddReview      : {Data: [{
         $Type             : 'UI.DataFieldForAction',
         Label             : '{i18n>AddReview}',
-        ![@UI.Hidden] : {$edmJson: {$Eq: [{$Path: 'associatedQuestion'}, true]}},
+        ![@UI.Hidden]     : {$edmJson: {$Eq: [
+            {$Path: 'associatedQuestion'},
+            true
+        ]}},
         Action            : 'TestService.addReview',
         InvocationGrouping: #ChangeSet,
-       
+
     }, ]},
 
     UI.DataPoint #testRating      : {
@@ -198,19 +205,30 @@ annotate service.Tests with @(
     UI.Identification             : [
         {Value: rating},
         {
+            $Type        : 'UI.DataFieldForAction',
+            Label        : '{i18n>AddReview}',
+            ![@UI.Hidden]: {$edmJson: {$Eq: [
+                {$Path: 'associatedQuestion'},
+                false
+            ]}},
+            Action       : 'TestService.addReview'
+        },
+
+        {
             $Type : 'UI.DataFieldForAction',
-            Label : '{i18n>AddReview}',
-            ![@UI.Hidden] : {$edmJson: {$Eq: [{$Path: 'associatedQuestion'},false]}},
-            Action: 'TestService.addReview'
+            Label :  'AddQuestion',
+            Action:   'TestService.assignQuestionsToTest' 
         }
     ],
+
+    
 
 
 );
 
 annotate service.Questions with @(UI.LineItem #Questions: []);
 
-annotate service.Questions.answers with{
+annotate service.Questions.answers with {
     Text @Common.Text: questions.test_TestID
 };
 
@@ -218,7 +236,7 @@ annotate service.Questions with {
     Text @Common.Text: answers.Text
 };
 
-annotate service.Questions with @( UI.LineItem #i18nQuestions: [
+annotate service.Questions with @(UI.LineItem #i18nQuestions: [
     {
         $Type: 'UI.DataField',
         Value: Text,
@@ -245,6 +263,7 @@ annotate service.Questions with @( UI.LineItem #i18nQuestions: [
 
 
 annotate my.TestService.Reviews with @(UI.LineItem #Review: []);
+
 annotate service.Tests with @(UI.FieldGroup #Review1: {
     $Type: 'UI.FieldGroupType',
     Data : [
@@ -262,3 +281,7 @@ annotate service.Tests with @(UI.FieldGroup #Review1: {
 });
 
 annotate my.TestService.Reviews with @(UI.LineItem #Reviews: []);
+
+annotate my.TestService.Suppliers with {
+    isBlocked @title: 'Supplier Blocked';
+};

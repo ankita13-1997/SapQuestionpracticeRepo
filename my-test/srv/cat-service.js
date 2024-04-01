@@ -51,7 +51,50 @@ module.exports = cds.service.impl(async (srv) => {
     return { review, reviews }; // Return the newly added review and all reviews
   });
 
+  //suppliers
+  srv.on("READ", 'Tests', async (req, next) => {
+    if (!req.query.SELECT.columns) return next();
+    const expandIndex = req.query.SELECT.columns.findIndex(
+        ({ expand, ref }) => expand && ref[0] === "supplier"
+    );
+    console.log("this expand index ",expandIndex)
+    if (expandIndex < 0) return next();
 
+    // Remove expand from query
+    req.query.SELECT.columns.splice(expandIndex, 1);
+
+    // Make sure supplier_ID will be returned
+    if (!req.query.SELECT.columns.indexOf('*') >= 0 &&
+        !req.query.SELECT.columns.find(
+            column => column.ref && column.ref.find((ref) => ref == "supplier_ID"))
+    ) {
+       console.log("supplier id if ");
+        req.query.SELECT.columns.push({ ref: ["supplier_ID"] });
+    }
+
+    const test = await next();
+    console.log("test from next ", test)
+
+    const asArray = x => Array.isArray(x) ? x : [ x ];
+
+    // Request all associated suppliers
+    const supplierIds = asArray(test).map(test => test.supplier_ID);
+    console.log("supplier id", supplierIds)
+    const suppliers = await bupa.run(SELECT.from('TestService.Suppliers').where({ ID: supplierIds }));
+    console.log("suppliers ", supplierIds)
+
+    // Convert in a map for easier lookup
+    const suppliersMap = {};
+    for (const supplier of suppliers)
+        suppliersMap[supplier.ID] = supplier;
+
+    // Add suppliers to result
+    for (const note of asArray(test)) {
+        note.supplier = suppliersMap[note.supplier_ID];
+    }
+
+    return test;
+});
 
 
   // Handler for the assignQuestionsToTest action
@@ -117,6 +160,13 @@ module.exports = cds.service.impl(async (srv) => {
     // Return a success message
     return updatedQuestions;
   });
+  
+  const bupa = await cds.connect.to('API_BUSINESS_PARTNER');
+
+  srv.on('READ', 'Suppliers', async req => {
+      return bupa.run(req.query);
+  });
+
 });
 
 // Function to shuffle an array

@@ -10,7 +10,13 @@ annotate TestService.Tests with {
     ModifiedBy       @title :  'ModifiedBy';
     fees             @title :  'Fees';
     @Measures.ISOCurrency: currency_code
-    fees
+    fees;
+
+    supplier    @(
+        title: 'Supplier',
+        Common.Text: supplier.fullName,
+        Common.TextArrangement: #TextOnly
+    )
    
 
 }
@@ -48,6 +54,7 @@ annotate TestService.Tests with @(
                 {Value: CreatedBy},
                 {Value: fees},
                 // {Value : currency_code}
+                {Value: supplier_ID}
     
             ]
         }
@@ -62,3 +69,32 @@ annotate TestService.Questions with @(
         ]
     }
 ){};
+
+
+annotate TestService.Tests with {
+    supplier @(
+        Common.ValueList: {
+            Label: 'Suppliers',
+            CollectionPath: 'Suppliers',
+            Parameters: [
+                { $Type: 'Common.ValueListParameterInOut',
+                    LocalDataProperty: supplier_ID,
+                    ValueListProperty: 'ID'
+                },
+                { $Type: 'Common.ValueListParameterDisplayOnly',
+                    ValueListProperty: 'fullName'
+                }
+            ]
+        }
+    );
+}
+
+annotate TestService.Suppliers with {
+    ID          @(
+        title: 'ID',
+        Common.Text: fullName
+    );
+    fullName    @title: 'Name';
+}
+
+annotate TestService.Suppliers with @Capabilities.SearchRestrictions.Searchable : false;

@@ -3,6 +3,7 @@
 namespace my.TestService;
 using {Currency, managed, cuid } from '@sap/cds/common';
 using my.TestService.Reviews from './reviews';
+using {  API_BUSINESS_PARTNER as bupa } from '../srv/external/API_BUSINESS_PARTNER';
 
 entity Questions {
   key QuestionID : String;
@@ -27,7 +28,8 @@ entity Tests{
       reviews :     Association to many Reviews on reviews.test = $self;
       fees        : Decimal(9, 2);
       currency     : Currency;
-      associatedQuestion: Boolean
+      associatedQuestion: Boolean;
+      supplier    : Association to Suppliers;
       
 }
 
@@ -41,4 +43,10 @@ aspect Answers{
 
 
   // No direct associations for aspects
+}
+
+entity Suppliers as projection on bupa.A_BusinessPartner {
+        key BusinessPartner as ID,
+        BusinessPartnerFullName as fullName,
+        BusinessPartnerIsBlocked as isBlocked,
 }
